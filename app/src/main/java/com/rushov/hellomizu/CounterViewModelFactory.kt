@@ -1,0 +1,26 @@
+package com.rushov.hellomizu
+
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
+class CounterViewModel(
+    private val engine: Engine
+) : ViewModel() {
+
+    private val _count = MutableStateFlow(0)
+    val count: StateFlow<Int> = _count.asStateFlow()
+
+    fun increment() {
+        _count.value += 1
+    }
+
+    fun decrement() {
+        _count.value -= 1
+    }
+
+    fun getEngineStatus(): String {
+        return engine.start()
+    }
+}

@@ -1,20 +1,17 @@
 package com.rushov.hellomizu
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import androidx.lifecycle.ViewModelProvider
 
-class CounterViewModel : ViewModel() {
+class CounterViewModelFactory(
+    private val engine: Engine
+) : ViewModelProvider.Factory {
 
-    private val _count = MutableStateFlow(0)
-    val count: StateFlow<Int> = _count.asStateFlow()
-
-    fun increment() {
-        _count.value += 1
-    }
-
-    fun decrement() {
-        _count.value -= 1
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CounterViewModel::class.java)) {
+            return CounterViewModel(engine) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

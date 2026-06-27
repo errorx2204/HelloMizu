@@ -3,7 +3,7 @@ package com.rushov.hellomizu
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,12 +14,14 @@ import com.rushov.hellomizu.ui.theme.HelloMizuTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: CounterViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             HelloMizuTheme {
+                // Inject Electric Engine here!
+                val factory = CounterViewModelFactory(GasEngine())
+                val viewModel: CounterViewModel = viewModel(factory = factory)
+
                 CounterScreen(viewModel = viewModel)
             }
         }
@@ -40,6 +42,13 @@ fun CounterScreen(viewModel: CounterViewModel) {
         Text(
             text = "MIZU Counter",
             style = MaterialTheme.typography.headlineLarge
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = viewModel.getEngineStatus(),
+            style = MaterialTheme.typography.bodyMedium
         )
 
         Spacer(modifier = Modifier.height(32.dp))
